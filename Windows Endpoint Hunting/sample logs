@@ -1,1 +1,49 @@
+## Event-ID 1
+Process Create:
+RuleName: -
+UtcTime: 2026-10-16 09:51:25.537
+ProcessGuid: {6029a322-f39d-6ad1-9286-000000006700}
+ProcessId: 11696
+Image: C:\Windows\System32\consent.exe
+FileVersion: 10.0.19041.5794 (WinBuild.160101.0800)
+Description: Consent UI for administrative applications
+Product: Microsoft® Windows® Operating System
+Company: Microsoft Corporation
+OriginalFileName: consent.exe
+CommandLine: consent.exe 7192 426 0000011E4E88C950
+CurrentDirectory: C:\Windows\system32\
+User: NT AUTHORITY\SYSTEM
+LogonGuid: {6029a322-386d-6ac3-e703-000000000000}
+LogonId: 0x3E7
+TerminalSessionId: 5
+IntegrityLevel: System
+Hashes: MD5=5D630C63F6F31700676E856B5FF47B26,SHA256=7084382B4C73176AF091FD5082C64F9ACE71E19B7BE31A08CA357F427E4DC2E9,IMPHASH=7001337914CFB426620F508E54CDF72F
+ParentProcessGuid: {6029a322-3879-6ac3-a800-000000006700}
+ParentProcessId: 7192
+ParentImage: C:\Windows\System32\svchost.exe
+ParentCommandLine: C:\Windows\system32\svchost.exe -k netsvcs -p -s Appinfo
+ParentUser: NT AUTHORITY\SYSTEM
 
+
+## Event-ID 4
+Sysmon service state changed:
+UtcTime: 2026-10-16 09:51:00.298
+State: Started
+Version: 15.22
+SchemaVersion: 4.91
+
+## Event-ID 5
+Process terminated:
+RuleName: -
+UtcTime: 2026-10-16 09:51:00.981
+ProcessGuid: {6029a322-f382-6ad1-8586-000000006700}
+ProcessId: 20456
+Image: C:\Users\MK\Downloads\Sysmon\Sysmon.exe
+User: DESKTOP-O8Q1IIC\MK
+
+
+## Event-ID 16
+Sysmon config state changed:
+UtcTime: 2026-10-16 09:50:59.657
+Configuration: C:\Users\MK\Downloads\Sysmon\sysmonconfig-export.xml
+ConfigurationFileHash: SHA256=055FEBC600E6D7448CDF3812307275912927A62B1F94D0D933B64B294BC87162
