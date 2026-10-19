@@ -1,8 +1,8 @@
-# Windows Threat Hunting with Sysmon
+# Windows Threat Hunting with Sysmon, Python and Event Viewer
 
 ## 1. Overview
 
-This project focuses on using **Sysmon (System Monitor)** to perform threat hunting on Windows systems. Sysmon records detailed system activity that can help security analysts investigate suspicious processes, network connections, file operations, registry modifications, and potential defense evasion techniques.
+This project focuses on using **Sysmon (System Monitor)** to perform threat hunting on Windows systems. Sysmon records detailed system activity that can help investigate suspicious processes, network connections, file operations, registry modifications, and potential defense evasion techniques.
 
 The objective is to learn how to identify suspicious behavior, correlate multiple events, distinguish malicious activity from legitimate administrative actions, and document investigation findings.
 
@@ -50,15 +50,11 @@ The following events are useful starting points for a Windows threat-hunting inv
 | 25 | Process Tampering | Possible process image manipulation |
 | 26 | File Delete Detected | File deletion detection without the archival behavior associated with Event ID 23 |
 
-**Important:** Sysmon records only the events supported and enabled by the installed version and configuration. For example, Event ID 3 network connection logging and Event ID 7 image loading may not be enabled in your configuration. Some events can also generate significant log volume.
-
-Always check the official documentation for the exact event semantics.
-
 ## 5. How to Access Sysmon Logs
 
 Sysmon events are stored in the Windows Event Log.
 
-### Method 1: Event Viewer
+### Event Viewer
 
 1. Open the Windows Start menu.
 2. Search for `Event Viewer`.
@@ -69,40 +65,6 @@ Sysmon events are stored in the Windows Event Log.
 4. Open the log.
 5. Filter the current log by the Event IDs you want to investigate.
 6. Review the event details, including timestamps, process identifiers, executable paths, command lines, and network information when available.
-
-### Method 2: PowerShell
-
-To retrieve recent process creation events:
-
-```powershell
-Get-WinEvent -FilterHashtable @{
-    LogName = 'Microsoft-Windows-Sysmon/Operational'
-    Id = 1
-} -MaxEvents 20 |
-Select-Object TimeCreated, Id, Message
-```
-
-To investigate DNS queries:
-
-```powershell
-Get-WinEvent -FilterHashtable @{
-    LogName = 'Microsoft-Windows-Sysmon/Operational'
-    Id = 22
-} -MaxEvents 20 |
-Select-Object TimeCreated, Id, Message
-```
-
-To retrieve multiple event categories:
-
-```powershell
-Get-WinEvent -FilterHashtable @{
-    LogName = 'Microsoft-Windows-Sysmon/Operational'
-    Id = 1, 3, 11, 13, 22
-} -MaxEvents 100 |
-Select-Object TimeCreated, Id, Message
-```
-
-These commands read existing events. They do not enable missing Sysmon event categories or change the collection configuration.
 
 ## 6. Practical Threat-Hunting Methodology
 
@@ -180,37 +142,6 @@ Classify the activity as one of the following:
 
 Document the evidence and confidence level rather than relying on assumptions.
 
-## 7. Example Investigation: Suspicious PowerShell Activity
-
-Consider a hypothetical scenario in which PowerShell starts with an unusual command line.
-
-### Investigation path
-
-| Stage | Sysmon event | Investigation question |
-|---|---|---|
-| 1 | Event ID 1 — Process Create | What launched PowerShell, and what command was executed? |
-| 2 | Event ID 11 — File Create | Did the process create a script or executable? |
-| 3 | Event ID 22 — DNS Query | Did the process query an unexpected domain? |
-| 4 | Event ID 3 — Network Connection | Did the process establish an outbound connection? |
-| 5 | Event ID 13 — Registry Value Set | Was a registry value modified in a way that could indicate persistence? |
-
-### Example analysis
-
-Suppose PowerShell is launched by an unexpected parent process, creates a script in a temporary directory, and queries an unfamiliar domain.
-
-These observations increase the need for investigation, but they do not independently establish that the activity is malicious.
-
-Next, an analyst should:
-
-1. Examine the complete command line and parent process.
-2. Verify the script's location, contents, hash, and origin.
-3. Check whether the DNS query and network connection belong to the same process or related process activity.
-4. Investigate the domain using approved threat-intelligence sources.
-5. Search for relevant registry modifications and additional endpoint activity.
-6. Record the evidence, alternative explanations, and confidence level.
-
-**Correlation note:** Matching timestamps alone do not prove that events belong to the same activity. Use process identifiers, process GUIDs where available, timestamps, and other contextual fields to establish relationships.
-
 ## 8. What to Look for During Process Creation Hunting
 
 When analyzing Event ID 1, pay particular attention to:
@@ -263,65 +194,14 @@ Avoid these mistakes when conducting investigations:
 7. **Confusing an indicator with a conclusion.** A suspicious domain, process, or registry modification needs contextual validation.
 8. **Failing to document benign explanations.** Recording why activity was considered legitimate improves future investigations and reduces false positives.
 
-## 10. Investigation Notes Template
-
-Use the following template to document each hunt.
-
-### Hunt Summary
-
-- **Hunt ID:** TH-001
-- **Date and time:**
-- **Hostname:**
-- **Objective:**
-- **Sysmon Event IDs reviewed:**
-- **Initial observation:**
-
-### Evidence
-
-| Field | Observation |
-|---|---|
-| Timestamp | |
-| Event ID | |
-| Process image | |
-| Command line | |
-| Parent process | |
-| User account | |
-| Process GUID / PID | |
-| File path or hash | |
-| Destination IP / domain | |
-| Related registry activity | |
-
-### Analysis
-
-- **Why does the activity look suspicious?**
-- **What evidence supports the finding?**
-- **What benign explanation could account for it?**
-- **Which additional logs or sources were checked?**
-- **Were related events successfully correlated?**
-
-### Conclusion
+## 10. Conclusion
 
 - **Classification:** Benign / Suspicious / Likely malicious / Inconclusive
 - **Confidence:** Low / Medium / High
 - **Recommended next steps:**
 - **MITRE ATT&CK mapping, if supported by evidence:**
 
-## 11. Recommended Learning Exercises
-
-Complete these exercises in a Windows lab using benign, authorized activity.
-
-- [ ] Explore Event ID 1 and document five normal process executions.
-- [ ] Identify three unusual-looking command lines and assess their context.
-- [ ] Investigate parent-child relationships for common Windows applications.
-- [ ] Review Event ID 11 and identify legitimate file creation activity.
-- [ ] Examine Event ID 22 DNS queries and identify their associated processes.
-- [ ] Review Event ID 3 network connections if collection is enabled.
-- [ ] Investigate registry modifications recorded under Event IDs 12–14.
-- [ ] Correlate process creation, file creation, DNS queries, and network connections where evidence supports the relationship.
-- [ ] Document three suspicious-looking events and explain why each could be benign.
-- [ ] Write a final hunt report with evidence, alternative explanations, conclusions, and recommended actions.
-
-## 12. MITRE ATT&CK Mapping
+## 11. MITRE ATT&CK Mapping
 
 Map observed behavior to MITRE ATT&CK only when the evidence supports the technique.
 
@@ -337,20 +217,7 @@ Reference: [MITRE ATT&CK Enterprise](https://attack.mitre.org/)
 
 These are examples of possible mappings, not conclusions that should automatically be assigned to the events listed in this project.
 
-## 13. Expected Outcomes
-
-By completing this project, I aim to demonstrate practical understanding of:
-
-- Windows endpoint telemetry.
-- Sysmon event analysis.
-- Process behavior and command-line investigation.
-- Event correlation and investigative pivots.
-- Basic behavioral threat hunting.
-- Evidence-based analysis and false-positive assessment.
-- MITRE ATT&CK mapping.
-- Technical investigation documentation.
-
-## 14. References
+## 12. References
 
 - [Microsoft Sysmon Documentation](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon)
 - [Microsoft Windows Event Viewer Documentation](https://learn.microsoft.com/en-us/shows/inside/event-viewer)
@@ -358,5 +225,3 @@ By completing this project, I aim to demonstrate practical understanding of:
 - [Sysinternals Utilities](https://learn.microsoft.com/en-us/sysinternals/)
 
 ---
-
-**Project focus:** Hands-on Windows threat hunting using Sysmon telemetry, behavioral analysis, event correlation, and evidence-based investigation.
