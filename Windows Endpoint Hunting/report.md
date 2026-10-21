@@ -7,8 +7,6 @@ Summary assessment of five Sysmon events from a Windows endpoint, with the threa
 
 All five events look like **benign, baseline system and user activity**. No Indicators of Compromise (IoCs) or malicious patterns were detected in these isolated log snippets.
 
-> **Scope caveat:** This verdict applies only to the snippets reviewed. Signature, hash, and process-tree checks (listed under each event) are still needed to fully close them out.
-
 ## Summary
 
 | # | Event ID | Event | Process | Status | Risk |
