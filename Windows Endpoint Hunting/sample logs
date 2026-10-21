@@ -25,25 +25,58 @@ ParentCommandLine: C:\Windows\system32\svchost.exe -k netsvcs -p -s Appinfo
 ParentUser: NT AUTHORITY\SYSTEM
 
 
-## Event-ID 4
-Sysmon service state changed:
-UtcTime: 2026-10-16 09:51:00.298
-State: Started
-Version: 15.22
-SchemaVersion: 4.91
-
-## Event-ID 5
-Process terminated:
-RuleName: -
-UtcTime: 2026-10-16 09:51:00.981
-ProcessGuid: {6029a322-f382-6ad1-8586-000000006700}
-ProcessId: 20456
-Image: C:\Users\MK\Downloads\Sysmon\Sysmon.exe
+## Event-ID 3
+Network connection detected:
+RuleName: Usermode
+UtcTime: 2026-10-19 05:07:47.966
+ProcessGuid: {6029a322-94da-6ad1-0c7d-000000006700}
+ProcessId: 7464
+Image: C:\Users\MK\AppData\Local\Programs\Perplexity\Perplexity.exe
 User: DESKTOP-O8Q1IIC\MK
+Protocol: tcp
+Initiated: true
+SourceIsIpv6: false
+SourceIp: 192.168.1.35
+SourceHostname: -
+SourcePort: 51350
+SourcePortName: -
+DestinationIsIpv6: false
+DestinationIp: 104.18.27.48
+DestinationHostname: -
+DestinationPort: 443
+DestinationPortName: https
+
+## Event-ID 11
+File created:
+RuleName: DLL
+UtcTime: 2026-10-19 05:06:34.897
+ProcessGuid: {6029a322-a552-6ad5-799d-000000006700}
+ProcessId: 8212
+Image: C:\Windows\system32\msiexec.exe
+TargetFilename: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.13\System.Reflection.Primitives.dll
+CreationUtcTime: 2026-10-19 05:06:34.895
+User: NT AUTHORITY\SYSTEM
 
 
-## Event-ID 16
-Sysmon config state changed:
-UtcTime: 2026-10-16 09:50:59.657
-Configuration: C:\Users\MK\Downloads\Sysmon\sysmonconfig-export.xml
-ConfigurationFileHash: SHA256=055FEBC600E6D7448CDF3812307275912927A62B1F94D0D933B64B294BC87162
+## Event-ID 13
+Registry value set:
+RuleName: InvDB-Pub
+EventType: SetValue
+UtcTime: 2026-10-19 05:06:26.629
+ProcessGuid: {6029a322-38a1-6ac3-1001-000000006700}
+ProcessId: 2836
+Image: C:\Windows\system32\svchost.exe
+TargetObject: \REGISTRY\A\{2d3e8db5-0f8c-cdca-7565-2356a3c70b96}\Root\InventoryApplication\00007f3accf16340ed419d7dbb29e7d33f0c0000ffff\Publisher
+Details: Microsoft Corporation
+User: NT AUTHORITY\SYSTEM
+
+## Event-ID 22
+RuleName: -
+UtcTime: 2026-10-19 05:03:13.179
+ProcessGuid: {6029a322-94b0-6ad1-c07c-000000006700}
+ProcessId: 796
+QueryName: cdn.onenote.net
+QueryStatus: 0
+QueryResults: type:  5 cdn.onenote.net.edgekey.net;type:  5 e1553.dspg.akamaiedge.net;::ffff:23.50.12.60;
+Image: C:\Windows\System32\svchost.exe
+User: DESKTOP-O8Q1IIC\MK
