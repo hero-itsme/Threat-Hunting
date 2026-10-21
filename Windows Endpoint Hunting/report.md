@@ -31,11 +31,8 @@ All five events look like **benign, baseline system and user activity**. No Indi
 - **Status:** Legitimate / Expected
 - **What to hunt for elsewhere:**
   - Identify which process requested elevation, using other activity around `09:51:25` UTC on 2026-10-16.
-  - Look for UAC bypass techniques, where privilege escalation happens *without* invoking `consent.exe`.
+  - Look for UAC bypass techniques, where privilege escalation happens *without* invoking `consent.exe`. For Example: auto-elevating system binaries, registry keys, or COM interfaces, DLL Hijacking, Schedule Task Abuse.
   - Look for anomalous parents spawning `consent.exe` other than `svchost.exe` running Appinfo.
-
-> **Note on the `426` argument:** The `consent.exe` command line is not officially documented. `7192` matches the parent `svchost.exe` PID, but `426` should not be assumed to be a target process ID. Treat it as an opaque value and identify the requesting process from the process tree and timestamps (use `ProcessGuid`, since PIDs get reused).
-
 ---
 
 ### 2. Event ID 3: Network Connection (`Perplexity.exe`)
